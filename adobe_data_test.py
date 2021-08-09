@@ -45,13 +45,14 @@ class Searchrevenue:
         master_df=pd.merge(uniq_sea_eng_key_df,rev_per_eng_key_df,how='left')
         master_df=master_df.groupby(['Search Engine Domain','Search Keyword']).sum().reset_index().sort_values(by=['Revenue','Search Engine Domain','Search Keyword'],ascending=[False,True,True])
         
-        # Exporting results generated on a specific day to another S3 bucket (refined_zone_result)
+        # Exporting results generated on a specific date to another S3 bucket (refined_zone_result)
         csv_buffer = StringIO()
         master_df.to_csv(csv_buffer,index=False,sep="\t")
         s3_resource = boto3.resource('s3')
         s3_resource.Object('adobedatatest','refined_zone_result/'+datetime.datetime.today().strftime('%Y-%m-%d')+'_SearchKeywordPerformance.tab').put(Body=csv_buffer.getvalue())
         
         print(master_df)
+        print('New CICD test successful!')
 
 def lambda_handler(event,context):
     Searchrevenue.engine_key_revenue_generator('data.txt')
