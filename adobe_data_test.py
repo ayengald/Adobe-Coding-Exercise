@@ -52,7 +52,6 @@ class Searchrevenue:
         s3_resource.Object('adobedatatest','refined_zone_result/'+datetime.datetime.today().strftime('%Y-%m-%d')+'_SearchKeywordPerformance.tab').put(Body=csv_buffer.getvalue())
         
         print(master_df)
-        print('New CICD test successful!')
 
 def lambda_handler(event,context):
     Searchrevenue.engine_key_revenue_generator('data.txt')
